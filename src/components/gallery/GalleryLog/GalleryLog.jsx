@@ -1,13 +1,13 @@
 import React from 'react';
 import { GalleryLogBox } from '../../styled/galleryStyle';
 
-const GalleryLog = ({log}) => {
+const GalleryLog = ({log, onDel}) => {
     return (
         <GalleryLogBox>
             {
                 log.map(item => <div className="log">
-                <p>{item}</p>
-                <i className='xi-close-circle'></i>
+                <p>{item.logword}</p>
+                <i className='xi-close-circle' onClick={() => onDel(item.id)}></i>
             </div>)
             }
         </GalleryLogBox>

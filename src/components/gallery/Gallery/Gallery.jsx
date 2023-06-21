@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { styled } from 'styled-components';
 import { Container } from '../../styled/galleryStyle'
@@ -10,8 +10,9 @@ const Gallery = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [keyword, setKeyword] = useState('');
+    const no = useRef(1);
     const [log, setLog] = useState([]);
+    const [keyword, setKeyword] = useState({ word: ''});
 
     useEffect(() => {
         const API_KEY = '10451829-5bc4919a46bc9b5b0313d285f'
@@ -31,13 +32,19 @@ const Gallery = () => {
     
     const onSearch = ( text ) => {
         setKeyword(text);
-        setLog(item => {
-            if (log.length > 4) {
-                setLog(log.shift()); // 첫 번째 요소 제거
-            }
-            return [...item, text];
-        });
+        setLog(item => [
+            ...item,
+            { id: no.current++, logword: text } ]);
+        if (log.length > 4) {
+            setLog(item => item.slice(1));
+
+        }
     }
+    const onDel = id => {
+        setLog(log.filter(item => item.id !== id));
+    }
+
+    console.log(log)
 
     return (
         <>
@@ -45,7 +52,7 @@ const Gallery = () => {
             data && loading ?
             <Container width="1400px">
             <GallerySearch onSearch={onSearch} />
-            <GalleryLog log={log} />
+            <GalleryLog log={log} onDel={onDel} />
             <GalleryList data={data} />
             </Container>
             : <h2>로딩 중..</h2>

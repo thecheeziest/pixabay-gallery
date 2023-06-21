@@ -95,5 +95,6 @@ export const GalleryLogBox = styled.div`
         p {
             margin-right: 15px;
         }
+        i { cursor: pointer; }
     }
 `
